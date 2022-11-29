@@ -12,6 +12,7 @@ import numpy as np
 import time
 from numpy import linalg
 import math
+from termcolor import colored
 
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
@@ -93,7 +94,18 @@ with mp_pose.Pose(
     # Draw the pose annotation on the image.
     image.flags.writeable = True
     image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-    # ²
+    for lId, i in zip(landMarkLabels, range(len(landMarkLabels))):
+      try:
+        if lId in useful_landmarks:
+          l = results.pose_landmarks.landmark[i]
+          if l.visibility > 0.8:
+            # print('{} : x={}, y={}, z={}, v={}'.format(lId, l.x, l.y, l.z, l.visibility))
+            pass # :)
+        else:
+            results.pose_landmarks.landmark[i].visibility = 0
+      except AttributeError as ae:
+        # print(ae)
+        pass
         
     mp_drawing.draw_landmarks(
         image,
@@ -111,19 +123,26 @@ with mp_pose.Pose(
         break
       
     # Left and right shoulder angle calculations
-    xr = vecteur(results.pose_landmarks.landmark[12], results.pose_landmarks.landmark[14])
-    yr = vecteur(results.pose_landmarks.landmark[12], results.pose_landmarks.landmark[24])
-    xl = vecteur(results.pose_landmarks.landmark[11], results.pose_landmarks.landmark[13])
-    yl = vecteur(results.pose_landmarks.landmark[11], results.pose_landmarks.landmark[23])
+    try:
+      xr = vecteur(results.pose_landmarks.landmark[12], results.pose_landmarks.landmark[14])
+      yr = vecteur(results.pose_landmarks.landmark[12], results.pose_landmarks.landmark[24])
+      xl = vecteur(results.pose_landmarks.landmark[11], results.pose_landmarks.landmark[13])
+      yl = vecteur(results.pose_landmarks.landmark[11], results.pose_landmarks.landmark[23])
+    
 
-    aShoulderRest = 12.3
-    aShoulderExtension = 76
-    aRightShoulder = angle(xr, yr)
-    aLeftShoulder = angle(xl, yl)
+      aShoulderRest = 12.3
+      aShoulderExtension = 76
+      aRightShoulder = angle(xr, yr)
+      aLeftShoulder = angle(xl, yl)
+    
 
-    print("aLeftShoulder : " + str(aLeftShoulder) + ", aRightShoulder : " + str(aRightShoulder))
+      print("aLeftShoulder : " + str(aLeftShoulder) + ", aRightShoulder : " + str(aRightShoulder))
 
-    aRightShoulderNorm = (aRightShoulder - aShoulderRest) / (aShoulderExtension - aShoulderRest)
-    aLeftShoulderNorm = (aLeftShoulder - aShoulderRest) / (aShoulderExtension - aShoulderRest)
+      aRightShoulderNorm = (aRightShoulder - aShoulderRest) / (aShoulderExtension - aShoulderRest)
+      aLeftShoulderNorm = (aLeftShoulder - aShoulderRest) / (aShoulderExtension - aShoulderRest)
+    except AttributeError as ae:
+      print(colored("Not detecting pose, please move", "red", attrs=['bold']))
+      # pass
+
 
 cap.release()
