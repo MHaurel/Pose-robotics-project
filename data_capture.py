@@ -63,6 +63,6 @@ def main(IP, port):
 
 
 if __name__ == "__main__":
-    IP = "169.254.77.238"
-    port = 9559
+    IP = "127.0.0.1"    # IP of the robot
+    port = 60557        # Port protocole
     main(IP,port)

@@ -142,7 +142,6 @@ with mp_pose.Pose(
       aLeftShoulderNorm = (aLeftShoulder - aShoulderRest) / (aShoulderExtension - aShoulderRest)
     except AttributeError as ae:
       print(colored("Not detecting pose, please move", "red", attrs=['bold']))
-      # pass
 
 
 cap.release()
