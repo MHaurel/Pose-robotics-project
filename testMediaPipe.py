@@ -48,6 +48,16 @@ landMarkLabels = ['nose',\
                   'right_heel',
                   'left_foot_index',
                   'right_foot_index']
+
+useful_landmarks = [
+  'left_shoulder',
+  'right_shoulder',
+  'left_elbow',
+  'right_elbow',
+  'left_hip',
+  'right_hip',
+]
+      
 ## Doc API https://google.github.io/mediapipe/solutions/pose.html
 def getTimeInMS():
     return round(time.time()*1000)
@@ -75,10 +85,13 @@ with mp_pose.Pose(
     # Draw the pose annotation on the image.
     image.flags.writeable = True
     image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-    for lId, i in zip(landMarkLabels, range(len(landMarkLabels))):        
+    for lId, i in zip(landMarkLabels, range(len(landMarkLabels))):
+      if lId in useful_landmarks: 
         l = results.pose_landmarks.landmark[i]
-        if l.visibility > 0.8:
-            print('{} : x={}, y={}, z={}, v={}'.format(lId, l.x,l.y,l.z,l.visibility))
+        if l.visibility > 0.8: # If the landmark is visible enough
+            print('{} : x={}, y={}, z={}, v={}'.format(lId, l.x, l.y, l.z, l.visibility))
+      else:
+        results.pose_landmarks.landmark[i].visibility = 0
         
     mp_drawing.draw_landmarks(
         image,
