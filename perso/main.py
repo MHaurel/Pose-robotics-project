@@ -1,26 +1,27 @@
 import cv2
 import mediapipe as mp
 from mediapipe.framework.formats import landmark_pb2
+from utils import get_new_pose_landmarks_style, NEW_POSE_CONNECTIONS, _POSE_CONNECTIONS
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 mp_pose = mp.solutions.pose
 
 points = [
-    mp_pose.PoseLandmark.RIGHT_SHOULDER,
-    mp_pose.PoseLandmark.LEFT_SHOULDER,
-    mp_pose.PoseLandmark.LEFT_ELBOW,
-    mp_pose.PoseLandmark.LEFT_HIP,
-    mp_pose.PoseLandmark.RIGHT_ELBOW,
-    mp_pose.PoseLandmark.RIGHT_HIP,
-    mp_pose.PoseLandmark.RIGHT_WRIST,
-    mp_pose.PoseLandmark.LEFT_WRIST,
+  mp_pose.PoseLandmark.LEFT_SHOULDER,   # 11
+  mp_pose.PoseLandmark.RIGHT_SHOULDER,  # 12
+  mp_pose.PoseLandmark.LEFT_ELBOW,      # 13  
+  mp_pose.PoseLandmark.RIGHT_ELBOW,     # 14
+  mp_pose.PoseLandmark.LEFT_WRIST,      # 15
+  mp_pose.PoseLandmark.RIGHT_WRIST,     # 16
+  mp_pose.PoseLandmark.LEFT_HIP,        # 23
+  mp_pose.PoseLandmark.RIGHT_HIP,       # 24
 ]
 
 # For webcam input:
 cap = cv2.VideoCapture(0)
 with mp_pose.Pose(
-    min_detection_confidence=0.5,
-    min_tracking_confidence=0.5) as pose:
+  min_detection_confidence=0.5,
+  min_tracking_confidence=0.5) as pose:
   while cap.isOpened():
     success, image = cap.read()
     if not success:
@@ -46,15 +47,17 @@ with mp_pose.Pose(
 
     mp_drawing.draw_landmarks(
         image,
-        # results.pose_landmarks,
-        landmark_subset,
-        # mp_pose.POSE_CONNECTIONS,
-        # landmark_drawing_spec=mp_drawing_styles.get_default_pose_landmarks_style()
+        results.pose_landmarks,
+        # landmark_subset,
+        mp_pose.POSE_CONNECTIONS,
+        # NEW_POSE_CONNECTIONS,
+        landmark_drawing_spec=mp_drawing_styles.get_default_pose_landmarks_style()
+        # landmark_drawing_spec=get_new_pose_landmarks_style()
     )
 
     # Print values landmarks
-    for point in points:
-        print(f"{point} : {[results.pose_landmarks.landmark[point].x, results.pose_landmarks.landmark[point].y, results.pose_landmarks.landmark[point].z]}")
+    # for point in points:
+    #     print(f"{point} : {[results.pose_landmarks.landmark[point].x, results.pose_landmarks.landmark[point].y, results.pose_landmarks.landmark[point].z]}")
 
     
 
