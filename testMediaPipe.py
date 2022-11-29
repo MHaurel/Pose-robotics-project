@@ -68,7 +68,7 @@ def vecteur(p1, p2):
     return[p2.x-p1.x, p2.y-p1.y]
 
 def angle(v1, v2):
-    return np.arccos(np.dot(v1, v2) / (linalg.norm(v1) * linalg.norm(v2)))
+    return math.degrees(np.arccos(np.dot(v1, v2) / (linalg.norm(v1) * linalg.norm(v2))))
 
 # For webcam input:
 cap = cv2.VideoCapture(0)
@@ -116,10 +116,14 @@ with mp_pose.Pose(
     xl = vecteur(results.pose_landmarks.landmark[11], results.pose_landmarks.landmark[13])
     yl = vecteur(results.pose_landmarks.landmark[11], results.pose_landmarks.landmark[23])
 
+    aShoulderRest = 12.3
+    aShoulderExtension = 76
     aRightShoulder = angle(xr, yr)
     aLeftShoulder = angle(xl, yl)
 
-    print("aRightShoulder : " + str(math.degrees(aRightShoulder)))
-    # print("aLeftShoulder : " + str(math.degrees(aLeftShoulder)))
+    print("aLeftShoulder : " + str(aLeftShoulder) + ", aRightShoulder : " + str(aRightShoulder))
+
+    aRightShoulderNorm = (aRightShoulder - aShoulderRest) / (aShoulderExtension - aShoulderRest)
+    aLeftShoulderNorm = (aLeftShoulder - aShoulderRest) / (aShoulderExtension - aShoulderRest)
 
 cap.release()
