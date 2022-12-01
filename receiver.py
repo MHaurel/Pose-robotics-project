@@ -24,12 +24,12 @@ while True:
 # display client address
        print("CONNECTION FROM:", str(addr))
   
-# send message to the client after
-# encoding into binary string
-       c.send(b"HELLO, How are you ?")
+       # send message to the client after
+       # encoding into binary string
+       # c.send(b"HELLO, How are you ?")
        
-       msg = "Bye.............."
-       c.send(msg.encode())
+       # msg = "Bye.............."
+       # c.send(msg.encode())
   
 # disconnect the server
 c.close()

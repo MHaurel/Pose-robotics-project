@@ -1,8 +1,7 @@
 import socket
+import time
   
 # take the server name and port name
-  
-host = 'local host'
 port = 5000
   
 # create a socket at client side
@@ -14,15 +13,10 @@ s = socket.socket(socket.AF_INET,
 # number on local computer.
 s.connect(('127.0.0.1', port))
   
-# receive message string from
-# server, at a time 1024 B
-msg = s.recv(1024)
-  
-# repeat as long as message
-# string are not empty
-while msg:
-    print('Received:' + msg.decode())
-    msg = s.recv(1024)
+while True:
+    msg = b"hello"
+    s.send(msg)
     
-# disconnect the client
     s.close()
+
+    time.sleep(1)
