@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Tue Oct  4 18:42:49 2022
-
-@author: hfchame
-"""
 
 import cv2
 import socket
@@ -14,7 +9,6 @@ import time
 from numpy import linalg
 import math
 from termcolor import colored
-import struct
 
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
@@ -136,7 +130,7 @@ with mp_pose.Pose(
           l = results.pose_landmarks.landmark[i]
           if l.visibility > 0.8:
             # print('{} : x={}, y={}, z={}, v={}'.format(lId, l.x, l.y, l.z, l.visibility))
-            pass # :)
+            pass
         else:
             results.pose_landmarks.landmark[i].visibility = 0
       except AttributeError as ae:
@@ -150,7 +144,7 @@ with mp_pose.Pose(
         landmark_drawing_spec=mp_drawing_styles.get_default_pose_landmarks_style())
     # Flip the image horizontally for a selfie-view display.
     
-    t2 = getTimeInMS()
+    # t2 = getTimeInMS()
     # print("Loop time in ms : {}".format(t2 - t1))
     
     cv2.imshow('MediaPipe Pose', cv2.flip(image, 1))
@@ -165,19 +159,16 @@ with mp_pose.Pose(
       xl = vecteur(results.pose_landmarks.landmark[11], results.pose_landmarks.landmark[13])
       yl = vecteur(results.pose_landmarks.landmark[11], results.pose_landmarks.landmark[23])
     
-
       aShoulderRest = 12.3
       aShoulderExtension = 76
       aRightShoulder = angle(xr, yr)
       aLeftShoulder = angle(xl, yl)
     
-
       print("aLeftShoulder : " + str(aLeftShoulder) + ", aRightShoulder : " + str(aRightShoulder))
 
       aRightShoulderNorm = (aRightShoulder - aShoulderRest) / (aShoulderExtension - aShoulderRest)
       aLeftShoulderNorm = (aLeftShoulder - aShoulderRest) / (aShoulderExtension - aShoulderRest)
 
-      # TODO
       # Send data to the robot
       s = init_connection()
       send_angular_data(s, aLeftShoulderNorm, aRightShoulderNorm)
