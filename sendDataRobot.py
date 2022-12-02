@@ -166,8 +166,8 @@ with mp_pose.Pose(
     
       print("aLeftShoulder : " + str(aLeftShoulder) + ", aRightShoulder : " + str(aRightShoulder))
 
-      aRightShoulderNorm = (aRightShoulder - aShoulderRest) / (aShoulderExtension - aShoulderRest)
-      aLeftShoulderNorm = (aLeftShoulder - aShoulderRest) / (aShoulderExtension - aShoulderRest) * -1
+      aRightShoulderNorm = (aRightShoulder - aShoulderRest) / (aShoulderExtension - aShoulderRest) * -1
+      aLeftShoulderNorm = (aLeftShoulder - aShoulderRest) / (aShoulderExtension - aShoulderRest)
 
       # Send data to the robot
       s = init_connection()

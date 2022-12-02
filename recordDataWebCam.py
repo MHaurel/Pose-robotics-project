@@ -99,9 +99,8 @@ def main(IP, port, dataDir):
             
 
 if __name__ == "__main__":
-    IP = "169.254.248.220"
-    IP = "192.168.137.147"
-    #IP = "192.168.137.147"
+    IP = "192.168.137.143" 
+    
     port = 9559
     baseDir = 'Exp_data'
     
