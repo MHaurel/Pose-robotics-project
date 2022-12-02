@@ -3,9 +3,6 @@ from termcolor import colored
 import argparse
 import qi
 import sys
-import time
-from naoqi import ALProxy
-import numpy as np
 
 parser = argparse.ArgumentParser()
 ip_robot = "127.0.0.1"
