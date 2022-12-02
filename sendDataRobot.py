@@ -97,17 +97,11 @@ def send_angular_data(s, al=None, ar=None):
   al : The angular value for the left shoulder
   ar : The angular value for the right shoulder
   """
-  # data = {
-  #   'aLeftShoulder': al,
-  #   'aRightShoulder': ar
-  # }
-
-  # dict or tab ??
+  # Putting a ';' between the angles
+  data = ";".join([str(al), str(ar)])
 
   # Send the data to the receiver program
-  # s.send(angles.encode())
-  # s.send(str(al).encode())
-  s.send(str(al).encode())
+  s.send(str(data).encode())
 
 # conn, addr = init_connection()
 s = init_connection()
@@ -186,7 +180,7 @@ with mp_pose.Pose(
       # TODO
       # Send data to the robot
       s = init_connection()
-      send_angular_data(s, aLeftShoulderNorm, aRightShoulder)
+      send_angular_data(s, aLeftShoulderNorm, aRightShoulderNorm)
 
     except AttributeError as ae:
       print(colored("Not detecting pose, please move", "red", attrs=['bold']))

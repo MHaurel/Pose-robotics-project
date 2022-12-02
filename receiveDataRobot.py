@@ -9,7 +9,7 @@ import numpy as np
 
 parser = argparse.ArgumentParser()
 ip_robot = "127.0.0.1"
-robot_port = 54826
+robot_port = 55095
 parser.add_argument("--ip", type=str, default=ip_robot,
                         help="Robot IP address. On robot or Local Naoqi: use '127.0.0.1'.")
 parser.add_argument("--port", type=int, default=robot_port,
@@ -45,20 +45,21 @@ while not has_been_connected:
     # Receive the messages
     # try:
     try:
-        aLeftShoulderNorm = float(c.recv(1024))
+        # Properly decode binary data
+        data = c.recv(1024)
+        
+        aLeftShoulderNorm = float(data.split(";")[0])
+        aRightShoulderNorm = float(data.split(";")[1])
     
+        print("aLeftShoulderNorm:", aLeftShoulderNorm, ";", "aRightShoulderNorm:", aRightShoulderNorm)
+        
 
-    # TODO : decode properly the byte data
-    # print(float(received_data))
-        print(aLeftShoulderNorm, type(aLeftShoulderNorm))
-
-    # TODO : read both values
-
-    # TODO : send values to the robot
+    # Send values to the robot
         motion_service = session.service("ALMotion")
 
         try:
-            motion_service.setAngles("LShoulderRoll", aLeftShoulderNorm, 0.15)
+            motion_service.setAngles("LShoulderRoll", aLeftShoulderNorm, 0.50)
+            motion_service.setAngles("RShoulderRoll", aRightShoulderNorm, 0.50)
         except BaseException as be:
             print(be)
     except ValueError as ve:
