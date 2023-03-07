@@ -152,7 +152,82 @@ with mp_pose.Pose(
         cv2.destroyWindow('MediaPipe Pose')
         break
       
-    # Left and right shoulder angle calculations
+    # Left and right hips angle calculations
+    try:
+      xr = vecteur(results.pose_landmarks.landmark[24], results.pose_landmarks.landmark[26])
+      yr = vecteur(results.pose_landmarks.landmark[12], results.pose_landmarks.landmark[24])
+      xl = vecteur(results.pose_landmarks.landmark[23], results.pose_landmarks.landmark[25])
+      yl = vecteur(results.pose_landmarks.landmark[11], results.pose_landmarks.landmark[23])
+    
+      # What are these used for ?
+      aShoulderRest = 12.3    
+      aShoulderExtension = 76
+      aRightHip = angle(xr, yr)
+      aLeftHip = angle(xl, yl)
+    
+      print("aLeftHip : " + str(aLeftHip) + ", aRightHip : " + str(aRightHip))
+
+      aRightHipNorm = (aRightHip - aShoulderRest) / (aShoulderExtension - aShoulderRest) * -1
+      aLeftHipNorm = (aLeftHip - aShoulderRest) / (aShoulderExtension - aShoulderRest)
+
+      # Send data to the robot
+      s = init_connection()
+      send_angular_data(s, aLeftHipNorm, aRightHipNorm)
+
+    except AttributeError as ae:
+      print(colored("Not detecting pose, please move", "red", attrs=['bold']))
+
+    # Left and right knees angle calculations
+    try:
+      xr = vecteur(results.pose_landmarks.landmark[24], results.pose_landmarks.landmark[26])
+      yr = vecteur(results.pose_landmarks.landmark[26], results.pose_landmarks.landmark[28])
+      xl = vecteur(results.pose_landmarks.landmark[23], results.pose_landmarks.landmark[25])
+      yl = vecteur(results.pose_landmarks.landmark[25], results.pose_landmarks.landmark[27])
+    
+      ########################################## What are these used for ?
+      aShoulderRest = 12.3    
+      aShoulderExtension = 76
+      aRightKnee = angle(xr, yr)
+      aLeftKnee = angle(xl, yl)
+    
+      print("aLeftKnee : " + str(aLeftKnee) + ", aRightKnee : " + str(aRightKnee))
+
+      aRightKneeNorm = (aRightKnee - aShoulderRest) / (aShoulderExtension - aShoulderRest) * -1
+      aLeftKneeNorm = (aLeftKnee - aShoulderRest) / (aShoulderExtension - aShoulderRest)
+
+      # Send data to the robot
+      s = init_connection()
+      send_angular_data(s, aLeftKneeNorm, aRightKneeNorm)
+
+    except AttributeError as ae:
+      print(colored("Not detecting pose, please move", "red", attrs=['bold']))
+
+    # Left and right elbows angle calculations
+    try:
+      xr = vecteur(results.pose_landmarks.landmark[12], results.pose_landmarks.landmark[14])
+      yr = vecteur(results.pose_landmarks.landmark[14], results.pose_landmarks.landmark[16])
+      xl = vecteur(results.pose_landmarks.landmark[11], results.pose_landmarks.landmark[13])
+      yl = vecteur(results.pose_landmarks.landmark[13], results.pose_landmarks.landmark[15])
+    
+      ########################################## What are these used for ?
+      aShoulderRest = 12.3    
+      aShoulderExtension = 76
+      aRightElbow = angle(xr, yr)
+      aLeftElbow = angle(xl, yl)
+    
+      print("aLeftElbow : " + str(aLeftElbow) + ", aRightElbow : " + str(aRightElbow))
+
+      aRightElbowNorm = (aRightElbow - aShoulderRest) / (aShoulderExtension - aShoulderRest) * -1
+      aLeftElbowNorm = (aLeftElbow - aShoulderRest) / (aShoulderExtension - aShoulderRest)
+
+      # Send data to the robot
+      s = init_connection()
+      send_angular_data(s, aLeftElbowNorm, aRightElbowNorm)
+
+    except AttributeError as ae:
+      print(colored("Not detecting pose, please move", "red", attrs=['bold']))
+
+    # Left and right shoulders angle calculations
     try:
       xr = vecteur(results.pose_landmarks.landmark[12], results.pose_landmarks.landmark[14])
       yr = vecteur(results.pose_landmarks.landmark[12], results.pose_landmarks.landmark[24])
